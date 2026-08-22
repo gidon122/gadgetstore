@@ -1,10 +1,10 @@
 import React from "react";
 import ProductCard from "./ProductCard";
-// import { useAppContext } from "@/context/AppContext";
+import { useAppContext } from "@/context/AppContext";
 
 const HomeProducts = () => {
 
-//   const { products, router } = useAppContext()
+const { products, router } = useAppContext()
 
   return (
     <div className="flex flex-col items-center pt-14">
@@ -17,9 +17,9 @@ const HomeProducts = () => {
       
       <button 
       
-    //   onClick={() =>
+     onClick={() =>
         
-        // { router.push('/all-products') }} 
+    { router.push('/all-products') }} 
         
         className="px-12 py-2.5 border rounded text-gray-500/70 hover:bg-slate-50/90 transition">
         See more
