@@ -5,12 +5,30 @@ import authSeller from "@/lib/authSeller";
 import connectDB from "@/config/db";
 import Product from "@/models/Product";
 
-// Configure Cloudinary with credentials
-cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET,
-});
+// Helper to configure and validate Cloudinary
+function configureCloudinary() {
+  const cloudName = process.env.CLOUDINARY_CLOUD_NAME || process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
+  const apiKey = process.env.CLOUDINARY_API_KEY;
+  const apiSecret = process.env.CLOUDINARY_API_SECRET;
+  const cloudinaryUrl = process.env.CLOUDINARY_URL;
+
+  if (cloudinaryUrl) {
+    cloudinary.config({ cloudinary_url: cloudinaryUrl });
+    return true;
+  }
+
+  if (cloudName && apiKey && apiSecret) {
+    cloudinary.config({
+      cloud_name: cloudName,
+      api_key: apiKey,
+      api_secret: apiSecret,
+      secure: true,
+    });
+    return true;
+  }
+
+  return false;
+}
 
 export async function POST(request) {
     try {
@@ -31,6 +49,17 @@ export async function POST(request) {
 
         if (!isSeller) {
             return NextResponse.json({ success: false, message: 'Forbidden: Seller access required' }, { status: 403 });
+        }
+
+        const isConfigured = configureCloudinary();
+        if (!isConfigured) {
+            return NextResponse.json(
+                {
+                    success: false,
+                    message: "Cloudinary credentials missing. Please add CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, and CLOUDINARY_API_SECRET to your Vercel Project Environment Variables."
+                },
+                { status: 500 }
+            );
         }
 
         const formData = await request.formData();
@@ -58,7 +87,7 @@ export async function POST(request) {
 
                 return new Promise((resolve, reject) => {
                     const stream = cloudinary.uploader.upload_stream(
-                        { resource_type: 'auto' },
+                        { resource_type: 'auto', folder: 'products' },
                         (error, result) => {
                             if (error) {
                                 reject(error);
