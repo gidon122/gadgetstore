@@ -7,7 +7,14 @@ const Footer = () => {
     <footer>
       <div className="flex flex-col md:flex-row items-start justify-center px-6 md:px-16 lg:px-32 gap-10 py-14 border-b border-gray-500/30 text-gray-500">
         <div className="w-4/5">
-          <Image className="w-28 md:w-32" src={assets.logo} alt="logo" />
+        <div
+    className="cursor-pointer text-2xl md:text-3xl font-bold"
+  >
+    <span className="text-orange-500">Gadget</span>
+    <span className="text-black">Store</span>
+  </div>
+          {/* <span className="text-orange-500">Gadget</span>
+          <span className="text-black">Store</span> */}
           <p className="mt-6 text-sm">
             Lorem Ipsum is simply dummy text of the printing and typesetting
             industry. Lorem Ipsum has been the industry&apos;s standard dummy text
@@ -41,13 +48,13 @@ const Footer = () => {
             <h2 className="font-medium text-gray-900 mb-5">Get in touch</h2>
             <div className="text-sm space-y-2">
               <p>+1-234-567-890</p>
-              <p>contact@greatstack.dev</p>
+              <p>contact@gadgetstore.dev</p>
             </div>
           </div>
         </div>
       </div>
       <p className="py-4 text-center text-xs md:text-sm">
-        Copyright 2025 © GreatStack.dev All Right Reserved.
+        Copyright 2025 © GadgetStore.dev All Right Reserved.
       </p>
     </footer>
   );
